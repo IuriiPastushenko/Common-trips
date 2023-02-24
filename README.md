@@ -1,3 +1,35 @@
+The application allows you to organize a trip between the points of departure and arrival for drivers and passengers.
+The main role is the trip.
+Roles: Driver, Passenger.
+Each trip has one driver and several passengers (from 0 to the maximum, which is set by the driver)
+
+Illustration:
+https://drive.google.com/file/d/1yvHQoY5DKfsVLIECVVIZCCglpgZdh7Og/view?usp=sharing
+
+Commits
+1 
+  Cозданы модули Trips, Drivers,Passengers.
+  Подключены БД PostgreSQL и ORM Typeorm.
+  Выполнены миграции Trips, Drivers,Passengers в БД.
+
+  Modules Trips, Drivers, Passengers were created.
+  PostgreSQL database and ORM Typeorm were connected.
+  Entities Trips, Drivers, Passengers were migrated to the database.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
@@ -73,15 +105,3 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 Nest is [MIT licensed](LICENSE).
 
 
-Приложение позволяет организовать поездку между пунктами отправления и прибытия на взаемовыгодных условиях для водителей и пассажиров.
-Основная роль - Поездка.
-
-
-
-
-
-Коммиты
-1 
-  создан модуль Trips
-  создан модуль Drivers
-  подключена БД PostgreSQL и ORM Typeorm
