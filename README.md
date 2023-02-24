@@ -7,16 +7,10 @@ Illustration:
 https://drive.google.com/file/d/1yvHQoY5DKfsVLIECVVIZCCglpgZdh7Og/view?usp=sharing
 
 Commits
-1 
-  Cозданы модули Trips, Drivers,Passengers.
-  Подключены БД PostgreSQL и ORM Typeorm.
-  Выполнены миграции Trips, Drivers,Passengers в БД.
-
+1 create_Trips_Drivers_Passengers
   Modules Trips, Drivers, Passengers were created.
   PostgreSQL database and ORM Typeorm were connected.
   Entities Trips, Drivers, Passengers were migrated to the database.
-
-
 
 
 
