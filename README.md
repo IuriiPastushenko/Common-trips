@@ -1,16 +1,26 @@
-The application allows you to organize a trip between the points of departure and arrival for drivers and passengers.
-The main role is the trip.
-Roles: Driver, Passenger.
+The application allows to organize a trip between the points of departure and arrival for drivers and passengers.
+The main role is Trip. Roles of customers: Driver, Passenger.
 Each trip has one driver and several passengers (from 0 to the maximum, which is set by the driver)
+Each customer can be either a driver (in the presence of a car) or a passenger on various trips.
+The uniqueness of the user is ensured by checking for the uniqueness of his e-mail and phone number.
 
 Illustration:
 https://drive.google.com/file/d/1yvHQoY5DKfsVLIECVVIZCCglpgZdh7Og/view?usp=sharing
+
+Endpoints:
+1 Create customer: localhost:3000/customers
+
 
 Commits
 1 create_Trips_Drivers_Passengers
   Modules Trips, Drivers, Passengers were created.
   PostgreSQL database and ORM Typeorm were connected.
   Entities Trips, Drivers, Passengers were migrated to the database.
+
+2 create_Customer
+  Entities Driver and Passenger - merged into the entity Customer.
+  For customer was created method Create.
+
 
 
 

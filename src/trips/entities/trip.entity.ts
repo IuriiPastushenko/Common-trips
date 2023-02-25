@@ -1,4 +1,5 @@
 import {
+  BeforeUpdate,
   Column,
   Entity,
   PrimaryGeneratedColumn,
@@ -33,6 +34,9 @@ export class TripEntity {
 
   @Column()
   finishdate: Date;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
