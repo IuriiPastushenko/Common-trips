@@ -1,7 +1,6 @@
 import { hash } from 'bcrypt';
 import {
   BeforeInsert,
-  BeforeUpdate,
   Column,
   Entity,
   PrimaryGeneratedColumn,

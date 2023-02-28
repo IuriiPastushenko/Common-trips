@@ -8,8 +8,8 @@ Illustration:
 https://drive.google.com/file/d/1yvHQoY5DKfsVLIECVVIZCCglpgZdh7Og/view?usp=sharing
 
 Endpoints:
-1 Create customer: localhost:3000/customers
-
+1 Create customer: localhost:3000/customers/create
+2 Login customer: localhost:3000/customers/login
 
 Commits
 1 create_Trips_Drivers_Passengers
@@ -21,6 +21,9 @@ Commits
   Entities Driver and Passenger - merged into the entity Customer.
   For customer was created method Create.
 
+3 create Login
+  Changed response during registration - added token.
+  For customer was created method Login.
 
 
 
