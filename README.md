@@ -21,7 +21,7 @@ Commits
   Entities Driver and Passenger - merged into the entity Customer.
   For customer was created method Create.
 
-3 create Login
+3 create_Login
   Changed response during registration - added token.
   For customer was created method Login.
 
