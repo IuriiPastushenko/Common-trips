@@ -10,16 +10,31 @@ import {
 import { CustomersService } from '@app/customers/customer.service';
 import { CreateCustomerDto } from '@app/customers/dto/create-customer.dto';
 import { UpdateCustomerDto } from '@app/customers/dto/update-customer.dto';
+import { CustomerResponseInterface } from '@app/customers/types/response-customer.interface';
 
 @Controller('customers')
 export class CustomersController {
   constructor(private readonly customersService: CustomersService) {}
 
-  @Post()
-  async create(@Body('customer') createCustomer: CreateCustomerDto) {
-    const customer = await this.customersService.createCustomer(createCustomer);
+  @Post('/create')
+  async create(
+    @Body('customer') dataForCreateCustomer: CreateCustomerDto,
+  ): Promise<CustomerResponseInterface> {
+    const customer = await this.customersService.createCustomer(
+      dataForCreateCustomer,
+    );
     return this.customersService.buildCustomerResponse(customer);
   }
+
+  // @Post('/login')
+  // async login(
+  //   @Body('customer') dataForLoginCustomer: LoginCustomerDto,
+  // ): Promise<CustomerResponseInterface> {
+  //   const customer = await this.customersService.loginCustomer(
+  //     dataForLoginCustomer,
+  //   );
+  //   return this.customersService.buildCustomerResponse(customer);
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

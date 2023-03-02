@@ -1,5 +1,5 @@
 Endpoints:
-1 Create customer: localhost:3000/customers
+1 Create customer: localhost:3000/customers/create
 request: {"customer": {
             "firstName": ,
             "secondName": ,
@@ -19,7 +19,6 @@ response: {"customer": {
             "gender": ,
             "yearOfBirth": ,
             "email": ,
-            "password": ,
             "phoneNumber": ,
             "image": ,
             "сarName": ,
@@ -27,6 +26,29 @@ response: {"customer": {
             "id": ,
             "createdAt": ,
             "updatedAt": 
-    } 
+            "token":
+            }
+          } 
 
-2
+2 Login customer: localhost:3000/customers/login
+request: {"customer": {
+            "email": " ,
+            "password": 
+            }
+          }
+response: {"customer": {
+            "firstName": ,
+            "secondName": ,
+            "gender": ,
+            "yearOfBirth": ,
+            "email": ,
+            "phoneNumber": ,
+            "image": ,
+            "сarName": ,
+            "yearOfManufactureOfTheCar": ,
+            "id": ,
+            "createdAt": ,
+            "updatedAt": 
+            "token":
+            }
+          } 

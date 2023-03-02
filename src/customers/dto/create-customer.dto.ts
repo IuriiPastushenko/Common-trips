@@ -1,11 +1,4 @@
-import {
-  IsEmail,
-  IsEnum,
-  IsInt,
-  IsPhoneNumber,
-  IsString,
-  Max,
-} from 'class-validator';
+import { IsEmail, IsEnum, IsInt, IsString, Max } from 'class-validator';
 
 enum CustomersGender {
   male,
@@ -32,7 +25,7 @@ export class CreateCustomerDto {
   @IsString()
   readonly password: string;
 
-  @IsPhoneNumber()
+  @IsString()
   readonly phoneNumber: string;
 
   @IsString()
