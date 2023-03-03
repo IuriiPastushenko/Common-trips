@@ -43,10 +43,10 @@ export class CustomersService {
   }
 
   buildCustomerResponse(customer: CustomerEntity): CustomerResponseInterface {
+    delete customer.password;
     return {
       customer: {
         ...customer,
-        // token: this.generateJwt(user),
       },
     };
   }

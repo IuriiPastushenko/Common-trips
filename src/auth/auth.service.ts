@@ -1,5 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CustomersService } from '@app/customers/customer.service';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CustomerEntity } from '@app/customers/entities/customer.entity';
@@ -13,28 +12,20 @@ export class AuthService {
     private readonly customerRepository: Repository<CustomerEntity>,
   ) {}
 
-  async validateUser(
+  async validateCustomer(
     dataForLoginCustomer: LoginCustomerDto,
-  ): Promise<CustomerEntity> {
+  ): Promise<CustomerEntity> | null {
+    console.log(dataForLoginCustomer);
     const customer = await this.customerRepository.findOne({
       where: { email: dataForLoginCustomer.email },
     });
-    if (!customer) {
-      throw new HttpException(
-        'E-mail is not valid',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
     const isPasswordCorrect = await compare(
       dataForLoginCustomer.password,
       customer.password,
     );
-    if (!isPasswordCorrect) {
-      throw new HttpException(
-        'Password is not valid',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
+    if (customer && isPasswordCorrect) {
+      return customer;
     }
-    return customer;
+    return null;
   }
 }
