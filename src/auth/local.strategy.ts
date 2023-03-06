@@ -14,7 +14,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(dataForLoginCustomer: LoginCustomerDto): Promise<any> {
-    console.log('333', dataForLoginCustomer);
     const customer = await this.authService.validateCustomer(
       dataForLoginCustomer,
     );

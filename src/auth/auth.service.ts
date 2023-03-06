@@ -15,7 +15,6 @@ export class AuthService {
   async validateCustomer(
     dataForLoginCustomer: LoginCustomerDto,
   ): Promise<CustomerEntity> | null {
-    console.log(dataForLoginCustomer);
     const customer = await this.customerRepository.findOne({
       where: { email: dataForLoginCustomer.email },
     });

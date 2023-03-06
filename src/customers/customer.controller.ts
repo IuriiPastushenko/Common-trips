@@ -15,10 +15,14 @@ import { UpdateCustomerDto } from '@app/customers/dto/update-customer.dto';
 import { CustomerResponseInterface } from '@app/customers/types/response-customer.interface';
 import { LoginCustomerDto } from '@app/customers/dto/login-customer.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { LocalStrategy } from '@app/auth/local.strategy';
 
 @Controller('customers')
 export class CustomersController {
-  constructor(private readonly customersService: CustomersService) {}
+  constructor(
+    private readonly customersService: CustomersService,
+    private readonly localStrategy: LocalStrategy,
+  ) {}
 
   @Post('/create')
   async create(
@@ -30,13 +34,11 @@ export class CustomersController {
     return this.customersService.buildCustomerResponse(customer);
   }
 
-  @UseGuards(AuthGuard('local'))
+  //UseGuards(AuthGuard('local'))
   @Post('/login')
   async login(@Body() dataForLoginCustomer: LoginCustomerDto): Promise<any> {
-  
-    //   const customer = await this.localStrategy.validate(dataForLoginCustomer);
-    //   return this.customersService.buildCustomerResponse(customer);
-    return dataForLoginCustomer;
+    const customer = await this.localStrategy.validate(dataForLoginCustomer);
+    return this.customersService.buildCustomerResponse(customer);
   }
 
   @Get(':id')

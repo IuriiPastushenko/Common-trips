@@ -5,15 +5,9 @@ import { CustomersModule } from '@app/customers/customer.module';
 import configTypeOrm from '@app/ormconfig';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TripsModule } from '@app/trips/trips.module';
-import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forRoot(configTypeOrm),
-    CustomersModule,
-    TripsModule,
-    AuthModule,
-  ],
+  imports: [TypeOrmModule.forRoot(configTypeOrm), CustomersModule, TripsModule],
   controllers: [AppController],
   providers: [AppService],
 })

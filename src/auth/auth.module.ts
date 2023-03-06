@@ -8,5 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   imports: [TypeOrmModule.forFeature([CustomerEntity]), PassportModule],
   providers: [AuthService, LocalStrategy],
+  exports: [LocalStrategy],
 })
 export class AuthModule {}
