@@ -15,14 +15,18 @@ export class AuthService {
   async validateCustomer(
     dataForLoginCustomer: LoginCustomerDto,
   ): Promise<CustomerEntity> | null {
+    console.log(dataForLoginCustomer);
+    console.log(dataForLoginCustomer.password);
     const customer = await this.customerRepository.findOne({
       where: { email: dataForLoginCustomer.email },
     });
-    const isPasswordCorrect = await compare(
-      dataForLoginCustomer.password,
-      customer.password,
-    );
-    if (customer && isPasswordCorrect) {
+    console.log(customer);
+    console.log(customer.password);
+    // const isPasswordCorrect = await compare(
+    //   dataForLoginCustomer.password,
+    //   customer.password,
+    // );
+    if (customer) {
       return customer;
     }
     return null;

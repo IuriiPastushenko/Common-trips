@@ -6,11 +6,9 @@ import { LoginCustomerDto } from '@app/customers/dto/login-customer.dto';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
+  args: any;
   constructor(private authService: AuthService) {
-    super({
-      usernameField: 'email',
-      passwordField: 'password',
-    });
+    super(args);
   }
 
   async validate(dataForLoginCustomer: LoginCustomerDto): Promise<any> {

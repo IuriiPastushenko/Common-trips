@@ -34,7 +34,7 @@ export class CustomersController {
     return this.customersService.buildCustomerResponse(customer);
   }
 
-  //UseGuards(AuthGuard('local'))
+  @UseGuards(AuthGuard('local'))
   @Post('/login')
   async login(@Body() dataForLoginCustomer: LoginCustomerDto): Promise<any> {
     const customer = await this.localStrategy.validate(dataForLoginCustomer);
