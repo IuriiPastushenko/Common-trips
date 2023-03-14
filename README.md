@@ -25,12 +25,19 @@ Commits
   Changed response during registration - added token.
   For customer was created method Login.
 
+4 create Authentication
+  Added validation by DTO
+  Created Autthentication:
+    - added decorator CurrentCustomer
+    - added AuthGuard
 
 
 
 
 
 
+Necessary
+1. 'JWT_SECRET' in [customer.service, auth.middleware]
 
 
 
