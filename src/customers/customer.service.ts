@@ -28,13 +28,13 @@ export class CustomerService {
       where: { email: dataForCreateCustomer.email },
     });
     if (customerByEmail) {
-      throw new UnprocessableEntityException('This email are token');
+      throw new UnprocessableEntityException('This email is token');
     }
     const customerByPhone = await this.customerRepository.findOne({
       where: { phoneNumber: dataForCreateCustomer.phoneNumber },
     });
     if (customerByPhone) {
-      throw new UnprocessableEntityException('This phone are token');
+      throw new UnprocessableEntityException('This phone is token');
     }
     const newCustomer = new CustomerEntity();
     Object.assign(newCustomer, dataForCreateCustomer);
@@ -60,13 +60,6 @@ export class CustomerService {
     return customer;
   }
 
-  // async updateCustomer(
-  //   id: string,
-  //   dataForUpdateCustomer: UpdateCustomerDto,
-  // ): Promise<CustomerEntity> {
-
-  // }
-
   async findById(id: number): Promise<CustomerEntity> {
     const customer = await this.customerRepository.findOne({ where: { id } });
     if (!customer) {
@@ -89,8 +82,38 @@ export class CustomerService {
     return customer;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} Customer`;
+  async updateCustomer(
+    currentCustomer: CustomerEntity,
+    id: number,
+    dataForUpdateCustomer: UpdateCustomerDto,
+  ): Promise<CustomerEntity> {
+    const customer = await this.getCustomerById(currentCustomer, id);
+    if ('email' in dataForUpdateCustomer) {
+      const emailFromDB = await this.customerRepository.findOne({
+        where: { email: dataForUpdateCustomer.email },
+      });
+      if (emailFromDB) {
+        throw new UnprocessableEntityException('This email is token');
+      }
+    }
+    if ('phoneNumber' in dataForUpdateCustomer) {
+      const phoneNumberFromDB = await this.customerRepository.findOne({
+        where: { email: dataForUpdateCustomer.email },
+      });
+      if (phoneNumberFromDB) {
+        throw new UnprocessableEntityException('This phone number is token');
+      }
+    }
+    if ('roles' in dataForUpdateCustomer && !customer.roles.includes('admin')) {
+      throw new ForbiddenException('Access is allowed only admin');
+    }
+    Object.assign(customer, dataForUpdateCustomer);
+    return await this.customerRepository.save(customer);
+  }
+
+  async remove(currentCustomer: CustomerEntity, id: number) {
+    await this.getCustomerById(currentCustomer, id);
+    return this.customerRepository.delete({ id });
   }
 
   generateJwt(customer: CustomerEntity): string {

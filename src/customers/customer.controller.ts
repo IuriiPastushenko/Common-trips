@@ -22,13 +22,13 @@ import { CustomersRole } from '@app/customers/enums/role.enum';
 import { RoleGuard } from '@app/customers/guards/role.guard';
 import { Roles } from './decorators/role.decorator';
 import { CustomerType } from './types/response-customer.types';
+import { DeleteResult } from 'typeorm';
 
 @Controller('customers')
 export class CustomersController {
   constructor(private readonly customersService: CustomerService) {}
 
   @Post('/create')
-  @UsePipes(new ValidationPipe())
   async create(
     @Body('customer') dataForCreateCustomer: CreateCustomerDto,
   ): Promise<CustomerResponseInterface> {
@@ -39,7 +39,6 @@ export class CustomersController {
   }
 
   @Post('/login')
-  @UsePipes(new ValidationPipe())
   async login(
     @Body('customer') dataForLoginCustomer: LoginCustomerDto,
   ): Promise<CustomerResponseInterface> {
@@ -70,23 +69,27 @@ export class CustomersController {
     return this.customersService.buildCustomerResponse(customer);
   }
 
-  // @Patch('/customer/:id')
-  // @UseGuards(AuthGuard)
-  // async update(
-  //   @CurrentCustomer() currentCustomer: CustomerEntity,
-  //   @Param('id') id: string,
-  //   @Body() dataForUpdateCustomer: UpdateCustomerDto,
-  //   @CurrentCustomer() currentCustomer: CustomerEntity,
-  // ): Promise<CustomerResponseInterface> {
-  //   const customer = await this.customersService.updateCustomer(
-  //     id,
-  //     dataForUpdateCustomer,
-  //   );
-  //   return this.customersService.buildCustomerResponse(customer);
-  // }
+  @Patch('/customer/:id')
+  @UseGuards(AuthGuard)
+  async update(
+    @CurrentCustomer() currentCustomer: CustomerEntity,
+    @Param('id') id: string,
+    @Body() dataForUpdateCustomer: UpdateCustomerDto,
+  ): Promise<CustomerType> {
+    const customer = await this.customersService.updateCustomer(
+      currentCustomer,
+      +id,
+      dataForUpdateCustomer,
+    );
+    return this.customersService.buildCustomerResponse(customer);
+  }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.customersService.remove(+id);
+  @Delete('/customer/:id')
+  @UseGuards(AuthGuard)
+  remove(
+    @CurrentCustomer() currentCustomer: CustomerEntity,
+    @Param('id') id: string,
+  ): Promise<DeleteResult> {
+    return this.customersService.remove(currentCustomer, +id);
   }
 }
