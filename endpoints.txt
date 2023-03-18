@@ -1,12 +1,16 @@
 Endpoints:
 1 Create customer: localhost:3000/customers/create
     request: CreateCustomerDto
-    response: buildCustomerResponse
+    response: buildCustomerResponseWithToken
 
 2 Login customer: localhost:3000/customers/login
     request: LoginCustomerDto
-    response: buildCustomerResponse
+    response: buildCustomerResponseWithToken
 
 3 Authentication: localhost:3000/customers/currentcustomer
     request: Bearer token
+    response: buildCustomerResponse
+
+4 Get current customer by id: localhost:3000/customers/customer/'id'
+    request: id, Bearer token
     response: buildCustomerResponse

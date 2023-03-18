@@ -8,14 +8,20 @@ import {
   UsePipes,
   ValidationPipe,
   UseGuards,
+  Patch,
 } from '@nestjs/common';
 import { CustomerService } from '@app/customers/customer.service';
 import { CreateCustomerDto } from '@app/customers/dto/create-customer.dto';
 import { LoginCustomerDto } from '@app/customers/dto/login-customer.dto';
 import { CustomerResponseInterface } from '@app/customers/types/response-customer.interface';
 import { CurrentCustomer } from '@app/customers/decorators/customer.decorator';
-import { CustomerEntity } from './entities/customer.entity';
-import { AuthGuard } from './guards/auth.guard';
+import { CustomerEntity } from '@app/customers/entities/customer.entity';
+import { AuthGuard } from '@app/customers/guards/auth.guard';
+import { UpdateCustomerDto } from '@app/customers/dto/update-customer.dto';
+import { CustomersRole } from '@app/customers/enums/role.enum';
+import { RoleGuard } from '@app/customers/guards/role.guard';
+import { Roles } from './decorators/role.decorator';
+import { CustomerType } from './types/response-customer.types';
 
 @Controller('customers')
 export class CustomersController {
@@ -29,7 +35,7 @@ export class CustomersController {
     const customer = await this.customersService.createCustomer(
       dataForCreateCustomer,
     );
-    return this.customersService.buildCustomerResponse(customer);
+    return this.customersService.buildCustomerResponseWithToken(customer);
   }
 
   @Post('/login')
@@ -40,23 +46,43 @@ export class CustomersController {
     const customer = await this.customersService.loginCustomer(
       dataForLoginCustomer,
     );
-    return this.customersService.buildCustomerResponse(customer);
+    return this.customersService.buildCustomerResponseWithToken(customer);
   }
 
   @Get('/currentcustomer')
   @UseGuards(AuthGuard)
   async currentCustomer(
-    @CurrentCustomer() customer: CustomerEntity,
-  ): Promise<CustomerResponseInterface> {
+    @CurrentCustomer() currentCustomer: CustomerEntity,
+  ): Promise<CustomerType> {
+    return this.customersService.buildCustomerResponse(currentCustomer);
+  }
+
+  @Get('/customer/:id')
+  @UseGuards(AuthGuard)
+  async getCustomerById(
+    @CurrentCustomer() currentCustomer: CustomerEntity,
+    @Param('id') id: string,
+  ): Promise<CustomerType> {
+    const customer = await this.customersService.getCustomerById(
+      currentCustomer,
+      +id,
+    );
     return this.customersService.buildCustomerResponse(customer);
   }
 
-  // @Patch(':id')
-  // update(
+  // @Patch('/customer/:id')
+  // @UseGuards(AuthGuard)
+  // async update(
+  //   @CurrentCustomer() currentCustomer: CustomerEntity,
   //   @Param('id') id: string,
-  //   @Body() updateCustomerDto: UpdateCustomerDto,
-  // ) {
-  //   return this.customersService.update(+id, updateCustomerDto);
+  //   @Body() dataForUpdateCustomer: UpdateCustomerDto,
+  //   @CurrentCustomer() currentCustomer: CustomerEntity,
+  // ): Promise<CustomerResponseInterface> {
+  //   const customer = await this.customersService.updateCustomer(
+  //     id,
+  //     dataForUpdateCustomer,
+  //   );
+  //   return this.customersService.buildCustomerResponse(customer);
   // }
 
   @Delete(':id')

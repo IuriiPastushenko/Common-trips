@@ -1,4 +1,9 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCustomerDto } from '@app/customers/dto/create-customer.dto';
@@ -7,6 +12,8 @@ import { CustomerEntity } from '@app/customers/entities/customer.entity';
 import { CustomerResponseInterface } from './types/response-customer.interface';
 import { sign } from 'jsonwebtoken';
 import { compare } from 'bcrypt';
+import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { CustomerType } from './types/response-customer.types';
 
 @Injectable()
 export class CustomerService {
@@ -53,8 +60,33 @@ export class CustomerService {
     return customer;
   }
 
-  findById(id: number): Promise<CustomerEntity> {
-    return this.customerRepository.findOne({ where: { id } });
+  // async updateCustomer(
+  //   id: string,
+  //   dataForUpdateCustomer: UpdateCustomerDto,
+  // ): Promise<CustomerEntity> {
+
+  // }
+
+  async findById(id: number): Promise<CustomerEntity> {
+    const customer = await this.customerRepository.findOne({ where: { id } });
+    if (!customer) {
+      throw new NotFoundException(`Incorrect id=${id}`);
+    }
+    return customer;
+  }
+
+  async getCustomerById(
+    currentCustomer: CustomerEntity,
+    id: number,
+  ): Promise<CustomerEntity> {
+    const adminRoleCustomer = currentCustomer.roles.includes('admin');
+    if (!adminRoleCustomer && !(currentCustomer.id === id)) {
+      throw new ForbiddenException(
+        `Access is allowed only admin or customer with id=${id}`,
+      );
+    }
+    const customer = await this.findById(id);
+    return customer;
   }
 
   remove(id: number) {
@@ -65,17 +97,22 @@ export class CustomerService {
     return sign(
       {
         id: customer.id,
-        email: customer.email,
       },
       'JWT_SECRET',
     );
   }
 
-  buildCustomerResponse(customer: CustomerEntity): CustomerResponseInterface {
+  buildCustomerResponse(customer: CustomerEntity): CustomerType {
     delete customer.password;
+    return customer;
+  }
+
+  buildCustomerResponseWithToken(
+    customer: CustomerEntity,
+  ): CustomerResponseInterface {
     return {
       customer: {
-        ...customer,
+        ...this.buildCustomerResponse(customer),
         token: this.generateJwt(customer),
       },
     };

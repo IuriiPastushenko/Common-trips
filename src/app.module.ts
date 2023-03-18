@@ -6,11 +6,19 @@ import configTypeOrm from '@app/ormconfig';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TripsModule } from '@app/trips/trips.module';
 import { AuthMiddleware } from '@app/middleware/auth.middleware';
+import { APP_GUARD } from '@nestjs/core';
+import { RoleGuard } from './customers/guards/role.guard';
 
 @Module({
   imports: [TypeOrmModule.forRoot(configTypeOrm), CustomersModule, TripsModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: RoleGuard,
+    },
+  ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

@@ -8,32 +8,42 @@ Illustration:
 https://drive.google.com/file/d/1yvHQoY5DKfsVLIECVVIZCCglpgZdh7Og/view?usp=sharing
 
 Endpoints:
-1 Create customer: localhost:3000/customers/create
-2 Login customer: localhost:3000/customers/login
+1 Create customer: localhost:3000/customers/create;
+2 Login customer: localhost:3000/customers/login;
+3 Current customer: localhost:3000/customers/currentcustomer;
 
 Commits
-1 create_Trips_Drivers_Passengers
-  Modules Trips, Drivers, Passengers were created.
-  PostgreSQL database and ORM Typeorm were connected.
-  Entities Trips, Drivers, Passengers were migrated to the database.
+1 create_Trips_Drivers_Passengers:
+    Modules Trips, Drivers, Passengers were created;
+    PostgreSQL database and ORM Typeorm were connected;
+    Entities Trips, Drivers, Passengers were migrated to the database.
 
-2 create_Customer
-  Entities Driver and Passenger - merged into the entity Customer.
-  For customer was created method Create.
+2 create_Customer:
+    Entities Driver and Passenger - merged into the entity Customer;
+    For customer was created method Create;
 
-3 create_Login
-  Changed response during registration - added token.
-  For customer was created method Login.
+3 create_Login:
+    Changed response during registration - added token;
+    For customer was created method Login.
 
-4 create Authentication
-  Added validation by DTO
-  Created Autthentication:
-    - added decorator CurrentCustomer
+4 create_Authentication:
+    Added validation by DTO;
+    Created Authentication:
+      - added decorator CurrentCustomer;
+      - added AuthGuard.
+
+
+5 create_Get_customers_by_id:
+    Update responses of server;
+    Create 'Get customers by id';
+
+
+
+    Created Authorization
+    - added role to CustomersEntity
+    - added decorator CurrentCustomerRole
     - added AuthGuard
-
-
-
-
+ 
 
 
 Necessary

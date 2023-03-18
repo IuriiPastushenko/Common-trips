@@ -1,11 +1,13 @@
 import { hash } from 'bcrypt';
 import {
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { CustomersRole } from '../enums/role.enum';
 
 @Entity('customers')
 export class CustomerEntity {
@@ -49,7 +51,10 @@ export class CustomerEntity {
   updatedAt: Date;
 
   @BeforeInsert()
+  @BeforeUpdate()
   async hashPassword() {
     this.password = await hash(this.password, 10);
   }
+  @Column('simple-array', { default: CustomersRole.user })
+  roles: string[];
 }

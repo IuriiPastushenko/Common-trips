@@ -1,4 +1,5 @@
 import { IsEmail, IsEnum, IsInt, IsString, Max } from 'class-validator';
+import { CustomersRole } from '../enums/role.enum';
 
 enum CustomersGender {
   male,
@@ -37,4 +38,7 @@ export class CreateCustomerDto {
   @IsInt()
   @Max(new Date().getFullYear())
   readonly yearOfManufactureOfTheCar?: number;
+
+  @IsEnum(CustomersRole)
+  readonly role?: string;
 }

@@ -4,6 +4,7 @@ import { CustomersController } from '@app/customers/customer.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CustomerEntity } from '@app/customers/entities/customer.entity';
 import { AuthGuard } from '@app/customers/guards/auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CustomerEntity])],
