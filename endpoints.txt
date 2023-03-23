@@ -14,3 +14,11 @@ Endpoints:
 4 Get current customer by id: localhost:3000/customers/customer/'id'
     request: id, Bearer token
     response: buildCustomerResponse
+
+5 Update Customer: localhost:3000/customers/customer/id
+  request: id, Bearer token, Body
+  response: buildCustomerResponse
+
+6 Delete Customer: localhost:3000/customers/customer/id
+  request: id, Bearer token
+  response: DeleteResult

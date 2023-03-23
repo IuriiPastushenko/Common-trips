@@ -1,5 +1,5 @@
 import { CustomerType } from '@app/customers/types/response-customer.types';
 
-export interface CustomerResponseInterface {
-  customer: CustomerType & { token: string };
+export interface CustomerResponseInterface extends CustomerType {
+  token: string;
 }

@@ -1,8 +1,8 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
-  UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -12,33 +12,22 @@ import { CustomerEntity } from '@app/customers/entities/customer.entity';
 import { CustomerResponseInterface } from './types/response-customer.interface';
 import { sign } from 'jsonwebtoken';
 import { compare } from 'bcrypt';
-import { UpdateCustomerDto } from './dto/update-customer.dto';
-import { CustomerType } from './types/response-customer.types';
+import { UpdateCustomerDto } from '@app/customers/dto/update-customer.dto';
+import { CustomerType } from '@app/customers/types/response-customer.types';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class CustomerService {
   constructor(
     @InjectRepository(CustomerEntity)
     private readonly customerRepository: Repository<CustomerEntity>,
+    private configService: ConfigService,
   ) {}
   async createCustomer(
     dataForCreateCustomer: CreateCustomerDto,
   ): Promise<CustomerEntity> {
-    const customerByEmail = await this.customerRepository.findOne({
-      where: { email: dataForCreateCustomer.email },
-    });
-    if (customerByEmail) {
-      throw new UnprocessableEntityException('This email is token');
-    }
-    const customerByPhone = await this.customerRepository.findOne({
-      where: { phoneNumber: dataForCreateCustomer.phoneNumber },
-    });
-    if (customerByPhone) {
-      throw new UnprocessableEntityException('This phone is token');
-    }
-    const newCustomer = new CustomerEntity();
-    Object.assign(newCustomer, dataForCreateCustomer);
-    return this.customerRepository.save(newCustomer);
+    const customer = this.customerRepository.create(dataForCreateCustomer);
+    return this.customerRepository.save(customer);
   }
 
   async loginCustomer(
@@ -48,14 +37,14 @@ export class CustomerService {
       where: { email: dataForLoginCustomer.email },
     });
     if (!customer) {
-      throw new UnprocessableEntityException('E-mail is not valid');
+      throw new NotFoundException('E-mail is not valid');
     }
     const isPasswordCorrect = await compare(
       dataForLoginCustomer.password,
       customer.password,
     );
-    if (!isPasswordCorrect) {
-      throw new UnprocessableEntityException('Password is not valid');
+    if (isPasswordCorrect) {
+      throw new BadRequestException('Password is not valid');
     }
     return customer;
   }
@@ -73,7 +62,7 @@ export class CustomerService {
     id: number,
   ): Promise<CustomerEntity> {
     const adminRoleCustomer = currentCustomer.roles.includes('admin');
-    if (!adminRoleCustomer && !(currentCustomer.id === id)) {
+    if (!adminRoleCustomer && currentCustomer.id !== id) {
       throw new ForbiddenException(
         `Access is allowed only admin or customer with id=${id}`,
       );
@@ -88,41 +77,16 @@ export class CustomerService {
     dataForUpdateCustomer: UpdateCustomerDto,
   ): Promise<CustomerEntity> {
     const customer = await this.getCustomerById(currentCustomer, id);
-    if ('email' in dataForUpdateCustomer) {
-      const emailFromDB = await this.customerRepository.findOne({
-        where: { email: dataForUpdateCustomer.email },
-      });
-      if (emailFromDB) {
-        throw new UnprocessableEntityException('This email is token');
-      }
-    }
-    if ('phoneNumber' in dataForUpdateCustomer) {
-      const phoneNumberFromDB = await this.customerRepository.findOne({
-        where: { email: dataForUpdateCustomer.email },
-      });
-      if (phoneNumberFromDB) {
-        throw new UnprocessableEntityException('This phone number is token');
-      }
-    }
-    if ('roles' in dataForUpdateCustomer && !customer.roles.includes('admin')) {
+    if (dataForUpdateCustomer.role && !customer.roles.includes('admin')) {
       throw new ForbiddenException('Access is allowed only admin');
     }
     Object.assign(customer, dataForUpdateCustomer);
-    return await this.customerRepository.save(customer);
+    return this.customerRepository.save(customer);
   }
 
   async remove(currentCustomer: CustomerEntity, id: number) {
     await this.getCustomerById(currentCustomer, id);
     return this.customerRepository.delete({ id });
-  }
-
-  generateJwt(customer: CustomerEntity): string {
-    return sign(
-      {
-        id: customer.id,
-      },
-      'JWT_SECRET',
-    );
   }
 
   buildCustomerResponse(customer: CustomerEntity): CustomerType {
@@ -134,10 +98,18 @@ export class CustomerService {
     customer: CustomerEntity,
   ): CustomerResponseInterface {
     return {
-      customer: {
-        ...this.buildCustomerResponse(customer),
-        token: this.generateJwt(customer),
-      },
+      ...this.buildCustomerResponse(customer),
+      token: this.generateJwt(customer),
     };
+  }
+
+  generateJwt(customer: CustomerEntity): string {
+    const jwtSecret = this.configService.get<string>('JWT_SECRET');
+    return sign(
+      {
+        id: customer.id,
+      },
+      jwtSecret,
+    );
   }
 }

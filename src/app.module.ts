@@ -7,10 +7,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TripsModule } from '@app/trips/trips.module';
 import { AuthMiddleware } from '@app/middleware/auth.middleware';
 import { APP_GUARD } from '@nestjs/core';
-import { RoleGuard } from './customers/guards/role.guard';
+import { RoleGuard } from '@app/customers/guards/role.guard';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(configTypeOrm), CustomersModule, TripsModule],
+  imports: [
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRoot(configTypeOrm),
+    CustomersModule,
+    TripsModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

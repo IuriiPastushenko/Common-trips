@@ -1,5 +1,15 @@
-import { IsEmail, IsEnum, IsInt, IsString, Max } from 'class-validator';
-import { CustomersRole } from '../enums/role.enum';
+import {
+  IsEmail,
+  IsEnum,
+  IsInt,
+  IsOptional,
+  IsString,
+  Max,
+  Validate,
+} from 'class-validator';
+import { IsEmailUnique } from '@app/customers/decorators/unique-email.decorator';
+import { CustomersRole } from '@app/customers/enums/role.enum';
+import { IsPhoneNumberlUnique } from '@app/customers/decorators/unique-phonenumber.decorator';
 
 enum CustomersGender {
   male,
@@ -13,32 +23,40 @@ export class CreateCustomerDto {
   @IsString()
   readonly secondName: string;
 
+  @IsOptional()
   @IsEnum(CustomersGender)
-  readonly gender?: string;
+  readonly gender: string;
 
+  @IsOptional()
   @IsInt()
   @Max(new Date().getFullYear())
-  readonly yearOfBirth?: number;
+  readonly yearOfBirth: number;
 
   @IsEmail()
+  @Validate(IsEmailUnique)
   readonly email: string;
 
   @IsString()
   readonly password: string;
 
   @IsString()
+  @Validate(IsPhoneNumberlUnique)
   readonly phoneNumber: string;
 
+  @IsOptional()
   @IsString()
-  readonly image?: string;
+  readonly image: string;
 
+  @IsOptional()
   @IsString()
-  readonly сarName?: string;
+  readonly сarName: string;
 
+  @IsOptional()
   @IsInt()
   @Max(new Date().getFullYear())
-  readonly yearOfManufactureOfTheCar?: number;
+  readonly yearOfManufactureOfTheCar: number;
 
+  @IsOptional()
   @IsEnum(CustomersRole)
-  readonly role?: string;
+  readonly role: string;
 }

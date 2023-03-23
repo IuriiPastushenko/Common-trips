@@ -38,16 +38,22 @@ Commits
     Create 'Get customers by id';
 
 
+6 сreated Authorization_updateCRUD_Customer:
+    Created Authorization_CRUD:
+      - added role to CustomersEntity;
+      - added decorator CurrentCustomerRole;
+      - added AuthGuard.
+    Updated CRUD:
+      - added decorator IsEmailUnique in create-customer.dto.ts;
+      - added decorator IsPhoneNumberUnique in create-customer.dto.ts;
+      - created update;
+      - created remove;
+    Created ConfigService  
 
-    Created Authorization
-    - added role to CustomersEntity
-    - added decorator CurrentCustomerRole
-    - added AuthGuard
  
 
 
-Necessary
-1. 'JWT_SECRET' in [customer.service, auth.middleware]
+
 
 
 

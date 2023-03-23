@@ -5,8 +5,6 @@ import {
   Body,
   Param,
   Delete,
-  UsePipes,
-  ValidationPipe,
   UseGuards,
   Patch,
 } from '@nestjs/common';
@@ -21,7 +19,7 @@ import { UpdateCustomerDto } from '@app/customers/dto/update-customer.dto';
 import { CustomersRole } from '@app/customers/enums/role.enum';
 import { RoleGuard } from '@app/customers/guards/role.guard';
 import { Roles } from './decorators/role.decorator';
-import { CustomerType } from './types/response-customer.types';
+import { CustomerType } from '@app/customers/types/response-customer.types';
 import { DeleteResult } from 'typeorm';
 
 @Controller('customers')
@@ -30,7 +28,7 @@ export class CustomersController {
 
   @Post('/create')
   async create(
-    @Body('customer') dataForCreateCustomer: CreateCustomerDto,
+    @Body() dataForCreateCustomer: CreateCustomerDto,
   ): Promise<CustomerResponseInterface> {
     const customer = await this.customersService.createCustomer(
       dataForCreateCustomer,

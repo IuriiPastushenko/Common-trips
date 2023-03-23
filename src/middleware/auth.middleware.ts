@@ -1,13 +1,17 @@
 //import { JWT_SECRET } from '@app/config';
 import { ExpressRequest } from '@app/types/expressRequest.interface';
-import { Injectable, NestMiddleware, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 import { verify } from 'jsonwebtoken';
 import { Response, NextFunction } from 'express';
 import { CustomerService } from '@app/customers/customer.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  constructor(private readonly customerService: CustomerService) {}
+  constructor(
+    private readonly customerService: CustomerService,
+    private configService: ConfigService,
+  ) {}
   async use(req: ExpressRequest, _: Response, next: NextFunction) {
     if (!req.headers.authorization) {
       req.customer = null;
@@ -16,7 +20,8 @@ export class AuthMiddleware implements NestMiddleware {
     }
     const token = req.headers.authorization.split(' ')[1];
     try {
-      const decode: any = verify(token, 'JWT_SECRET');
+      const jwtSecret = this.configService.get<string>('JWT_SECRET');
+      const decode: any = verify(token, jwtSecret);
       const customer = await this.customerService.findById(decode.id);
       req.customer = customer;
       next();
