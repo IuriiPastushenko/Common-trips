@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  RequestMethod,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AppController } from '@app/app.controller';
 import { AppService } from '@app/app.service';
 import { CustomersModule } from '@app/customers/customer.module';
@@ -6,9 +11,10 @@ import configTypeOrm from '@app/ormconfig';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TripsModule } from '@app/trips/trips.module';
 import { AuthMiddleware } from '@app/middleware/auth.middleware';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { RoleGuard } from '@app/customers/guards/role.guard';
 import { ConfigModule } from '@nestjs/config';
+import { StatisticModule } from '@app/statistic/statistic.module';
 
 @Module({
   imports: [
@@ -16,6 +22,7 @@ import { ConfigModule } from '@nestjs/config';
     TypeOrmModule.forRoot(configTypeOrm),
     CustomersModule,
     TripsModule,
+    StatisticModule,
   ],
   controllers: [AppController],
   providers: [
@@ -24,12 +31,23 @@ import { ConfigModule } from '@nestjs/config';
       provide: APP_GUARD,
       useClass: RoleGuard,
     },
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+      }),
+    },
   ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthMiddleware).forRoutes({
       path: 'customers/*',
+      method: RequestMethod.ALL,
+    });
+    consumer.apply(AuthMiddleware).forRoutes({
+      path: 'statistic/*',
       method: RequestMethod.ALL,
     });
   }

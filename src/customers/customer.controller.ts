@@ -11,20 +11,21 @@ import {
 import { CustomerService } from '@app/customers/customer.service';
 import { CreateCustomerDto } from '@app/customers/dto/create-customer.dto';
 import { LoginCustomerDto } from '@app/customers/dto/login-customer.dto';
-import { CustomerResponseInterface } from '@app/customers/types/response-customer.interface';
+import { CustomerResponseInterface } from '@app/customers/interfaces/response-customer.interface';
 import { CurrentCustomer } from '@app/customers/decorators/customer.decorator';
 import { CustomerEntity } from '@app/customers/entities/customer.entity';
 import { AuthGuard } from '@app/customers/guards/auth.guard';
 import { UpdateCustomerDto } from '@app/customers/dto/update-customer.dto';
-import { CustomersRole } from '@app/customers/enums/role.enum';
-import { RoleGuard } from '@app/customers/guards/role.guard';
-import { Roles } from './decorators/role.decorator';
-import { CustomerType } from '@app/customers/types/response-customer.types';
+import { CustomerType } from '@app/customers/interfaces/response-customer.types';
 import { DeleteResult } from 'typeorm';
+import { CustomerStatisticService } from '@app/customers/customer-statistic.service';
 
 @Controller('customers')
 export class CustomersController {
-  constructor(private readonly customersService: CustomerService) {}
+  constructor(
+    private readonly customersService: CustomerService,
+    private readonly customersStaticService: CustomerStatisticService,
+  ) {}
 
   @Post('/create')
   async create(
@@ -60,9 +61,10 @@ export class CustomersController {
     @CurrentCustomer() currentCustomer: CustomerEntity,
     @Param('id') id: string,
   ): Promise<CustomerType> {
-    const customer = await this.customersService.getCustomerById(
+    const customer = await this.customersService.findCustomerById(+id);
+    await this.customersStaticService.createFindHistory(
       currentCustomer,
-      +id,
+      customer,
     );
     return this.customersService.buildCustomerResponse(customer);
   }

@@ -9,11 +9,11 @@ import { Repository } from 'typeorm';
 import { CreateCustomerDto } from '@app/customers/dto/create-customer.dto';
 import { LoginCustomerDto } from '@app/customers/dto/login-customer.dto';
 import { CustomerEntity } from '@app/customers/entities/customer.entity';
-import { CustomerResponseInterface } from './types/response-customer.interface';
+import { CustomerResponseInterface } from './interfaces/response-customer.interface';
 import { sign } from 'jsonwebtoken';
 import { compare } from 'bcrypt';
 import { UpdateCustomerDto } from '@app/customers/dto/update-customer.dto';
-import { CustomerType } from '@app/customers/types/response-customer.types';
+import { CustomerType } from '@app/customers/interfaces/response-customer.types';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -49,7 +49,7 @@ export class CustomerService {
     return customer;
   }
 
-  async findById(id: number): Promise<CustomerEntity> {
+  async findCustomerById(id: number): Promise<CustomerEntity> {
     const customer = await this.customerRepository.findOne({ where: { id } });
     if (!customer) {
       throw new NotFoundException(`Incorrect id=${id}`);
@@ -57,7 +57,7 @@ export class CustomerService {
     return customer;
   }
 
-  async getCustomerById(
+  async getCustomerByIdAndRoles(
     currentCustomer: CustomerEntity,
     id: number,
   ): Promise<CustomerEntity> {
@@ -67,7 +67,7 @@ export class CustomerService {
         `Access is allowed only admin or customer with id=${id}`,
       );
     }
-    const customer = await this.findById(id);
+    const customer = await this.findCustomerById(id);
     return customer;
   }
 
@@ -76,8 +76,8 @@ export class CustomerService {
     id: number,
     dataForUpdateCustomer: UpdateCustomerDto,
   ): Promise<CustomerEntity> {
-    const customer = await this.getCustomerById(currentCustomer, id);
-    if (dataForUpdateCustomer.role && !customer.roles.includes('admin')) {
+    const customer = await this.getCustomerByIdAndRoles(currentCustomer, id);
+    if (dataForUpdateCustomer.roles && !customer.roles.includes('admin')) {
       throw new ForbiddenException('Access is allowed only admin');
     }
     Object.assign(customer, dataForUpdateCustomer);
@@ -85,7 +85,7 @@ export class CustomerService {
   }
 
   async remove(currentCustomer: CustomerEntity, id: number) {
-    await this.getCustomerById(currentCustomer, id);
+    await this.getCustomerByIdAndRoles(currentCustomer, id);
     return this.customerRepository.delete({ id });
   }
 

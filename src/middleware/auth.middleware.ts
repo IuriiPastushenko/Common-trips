@@ -1,5 +1,4 @@
-//import { JWT_SECRET } from '@app/config';
-import { ExpressRequest } from '@app/types/expressRequest.interface';
+import { ExpressRequest } from '@app/interfaces/expressRequest.interface'
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { verify } from 'jsonwebtoken';
 import { Response, NextFunction } from 'express';
@@ -22,7 +21,7 @@ export class AuthMiddleware implements NestMiddleware {
     try {
       const jwtSecret = this.configService.get<string>('JWT_SECRET');
       const decode: any = verify(token, jwtSecret);
-      const customer = await this.customerService.findById(decode.id);
+      const customer = await this.customerService.findCustomerById(decode.id);
       req.customer = customer;
       next();
     } catch {

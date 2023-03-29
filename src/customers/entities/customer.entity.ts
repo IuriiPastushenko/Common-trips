@@ -1,9 +1,11 @@
+import { FindCustomerEntity } from '@app/statistic/entities/find-customer.entity';
 import { hash } from 'bcrypt';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -14,41 +16,41 @@ export class CustomerEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  firstName: string;
+  @Column({ type: 'varchar' })
+  first_name: string;
 
-  @Column()
-  secondName: string;
+  @Column({ type: 'varchar' })
+  second_name: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'varchar' })
   gender: string;
 
-  @Column({ nullable: true })
-  yearOfBirth: number;
+  @Column({ nullable: true, type: 'int' })
+  year_of_birth: number;
 
-  @Column({ unique: true })
+  @Column({ unique: true, type: 'varchar' })
   email: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   password: string;
 
-  @Column({ unique: true })
-  phoneNumber: string;
+  @Column({ unique: true, type: 'varchar' })
+  phone_number: string;
 
-  @Column({ default: '' })
+  @Column({ default: '', type: 'varchar' })
   image: string;
 
-  @Column({ nullable: true })
-  сarName: string;
+  @Column({ nullable: true, type: 'varchar' })
+  сar_name: string;
 
-  @Column({ nullable: true })
-  yearOfManufactureOfTheCar: number;
+  @Column({ nullable: true, type: 'int' })
+  year_of_of_the_car: number;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  create_date: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  update_date: Date;
 
   @BeforeInsert()
   @BeforeUpdate()
@@ -57,4 +59,10 @@ export class CustomerEntity {
   }
   @Column('simple-array', { default: CustomersRole.user })
   roles: string[];
+
+  @OneToMany(() => FindCustomerEntity, (finder) => finder.finder_id)
+  finders: FindCustomerEntity[];
+
+  @OneToMany(() => FindCustomerEntity, (findObject) => findObject.object_id)
+  findObjects: FindCustomerEntity[];
 }
