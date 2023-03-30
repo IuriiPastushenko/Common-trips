@@ -16,17 +16,17 @@ export class CustomerEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar' })
-  first_name: string;
+  @Column({ name: 'first_name', type: 'varchar' })
+  firstName: string;
 
-  @Column({ type: 'varchar' })
-  second_name: string;
+  @Column({ name: 'second_name', type: 'varchar' })
+  secondName: string;
 
   @Column({ nullable: true, type: 'varchar' })
   gender: string;
 
-  @Column({ nullable: true, type: 'int' })
-  year_of_birth: number;
+  @Column({ name: 'year_of_birth', nullable: true, type: 'int' })
+  yearOfBirth: number;
 
   @Column({ unique: true, type: 'varchar' })
   email: string;
@@ -34,17 +34,17 @@ export class CustomerEntity {
   @Column({ type: 'varchar' })
   password: string;
 
-  @Column({ unique: true, type: 'varchar' })
-  phone_number: string;
+  @Column({ name: 'phone_number', unique: true, type: 'varchar' })
+  phoneNumber: string;
 
   @Column({ default: '', type: 'varchar' })
   image: string;
 
-  @Column({ nullable: true, type: 'varchar' })
-  сar_name: string;
+  @Column({ name: 'car_name', nullable: true, type: 'varchar' })
+  сarName: string;
 
-  @Column({ nullable: true, type: 'int' })
-  year_of_of_the_car: number;
+  @Column({ name: 'year_of_of_the_car', nullable: true, type: 'int' })
+  yearOfTheCar: number;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   create_date: Date;
@@ -60,9 +60,9 @@ export class CustomerEntity {
   @Column('simple-array', { default: CustomersRole.user })
   roles: string[];
 
-  @OneToMany(() => FindCustomerEntity, (finder) => finder.finder_id)
+  @OneToMany(() => FindCustomerEntity, (history) => history.finder)
   finders: FindCustomerEntity[];
 
-  @OneToMany(() => FindCustomerEntity, (findObject) => findObject.object_id)
-  findObjects: FindCustomerEntity[];
+  @OneToMany(() => FindCustomerEntity, (history) => history.object)
+  objects: FindCustomerEntity[];
 }

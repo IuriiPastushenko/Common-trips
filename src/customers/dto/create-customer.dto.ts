@@ -18,10 +18,10 @@ enum CustomersGender {
 
 export class CreateCustomerDto {
   @IsString()
-  readonly first_name: string;
+  readonly firstName: string;
 
   @IsString()
-  readonly second_name: string;
+  readonly secondName: string;
 
   @IsOptional()
   @IsEnum(CustomersGender)
@@ -30,7 +30,7 @@ export class CreateCustomerDto {
   @IsOptional()
   @IsInt()
   @Max(new Date().getFullYear())
-  readonly year_of_birth: number;
+  readonly yearOfBirth: number;
 
   @IsEmail()
   @Validate(IsEmailUnique)
@@ -41,7 +41,7 @@ export class CreateCustomerDto {
 
   @IsString()
   @Validate(IsPhoneNumberlUnique)
-  readonly phone_number: string;
+  readonly phoneNumber: string;
 
   @IsOptional()
   @IsString()
@@ -49,12 +49,12 @@ export class CreateCustomerDto {
 
   @IsOptional()
   @IsString()
-  readonly сar_name: string;
+  readonly сarName: string;
 
   @IsOptional()
   @IsInt()
   @Max(new Date().getFullYear())
-  readonly year_of_of_the_car: number;
+  readonly yearOfTheCar: number;
 
   @IsOptional()
   @IsEnum(CustomersRole)

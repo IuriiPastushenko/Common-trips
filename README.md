@@ -50,6 +50,9 @@ Commits
       - created remove;
     Created ConfigService  
 
+7 created_Statisic:
+    Created historyFind concrete customer
+
  
 
 

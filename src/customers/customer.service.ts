@@ -43,7 +43,7 @@ export class CustomerService {
       dataForLoginCustomer.password,
       customer.password,
     );
-    if (isPasswordCorrect) {
+    if (!isPasswordCorrect) {
       throw new BadRequestException('Password is not valid');
     }
     return customer;

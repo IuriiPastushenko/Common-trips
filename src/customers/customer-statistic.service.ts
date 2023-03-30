@@ -17,8 +17,8 @@ export class CustomerStatisticService {
     customer: CustomerEntity,
   ): Promise<void> {
     const dataFindHistory: FindHistoryInterface = {
-      finder_id: currentCustomer.id,
-      object_id: customer.id,
+      finder: currentCustomer,
+      object: customer,
     };
     const findHistory =
       this.customerStatisticRepository.create(dataFindHistory);

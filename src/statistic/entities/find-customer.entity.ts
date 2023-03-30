@@ -6,21 +6,19 @@ export class FindCustomerEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  date_find: Date;
-
-  @Column({ nullable: true, type: 'int' })
-  finder_id: number;
-
-  @Column({ nullable: true, type: 'int' })
-  object_id: number;
+  @Column({
+    name: 'date_find',
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  dateOfFind: Date;
 
   @ManyToOne(() => CustomerEntity, (customer) => customer.finders, {
     eager: true,
   })
   finder: CustomerEntity;
 
-  @ManyToOne(() => CustomerEntity, (customer) => customer.findObjects, {
+  @ManyToOne(() => CustomerEntity, (customer) => customer.objects, {
     eager: true,
   })
   object: CustomerEntity;

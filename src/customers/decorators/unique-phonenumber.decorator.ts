@@ -18,9 +18,9 @@ export class IsPhoneNumberlUnique implements ValidatorConstraintInterface {
     private readonly customerRepository: Repository<CustomerEntity>,
   ) {}
 
-  async validate(phone_number: string): Promise<boolean> {
+  async validate(phoneNumber: string): Promise<boolean> {
     const customer = await this.customerRepository.findOne({
-      where: { phone_number },
+      where: { phoneNumber },
     });
     if (customer) {
       throw new BadRequestException('This phoneNumber is forbidden ');
