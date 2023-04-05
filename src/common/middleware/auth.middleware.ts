@@ -1,4 +1,4 @@
-import { ExpressRequest } from '@app/interfaces/expressRequest.interface'
+import { ExpressRequest } from '@app/common/interfaces/expressRequest.interface'
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { verify } from 'jsonwebtoken';
 import { Response, NextFunction } from 'express';

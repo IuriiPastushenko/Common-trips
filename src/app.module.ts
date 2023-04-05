@@ -10,7 +10,7 @@ import { CustomersModule } from '@app/customers/customer.module';
 import configTypeOrm from '@app/ormconfig';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TripsModule } from '@app/trips/trips.module';
-import { AuthMiddleware } from '@app/middleware/auth.middleware';
+import { AuthMiddleware } from '@app/common/middleware/auth.middleware';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { RoleGuard } from '@app/customers/guards/role.guard';
 import { ConfigModule } from '@nestjs/config';

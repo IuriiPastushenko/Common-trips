@@ -1,4 +1,4 @@
-import { ExpressRequest } from '@app/interfaces/expressRequest.interface';
+import { ExpressRequest } from '@app/common/interfaces/expressRequest.interface';
 import {
   CanActivate,
   ExecutionContext,

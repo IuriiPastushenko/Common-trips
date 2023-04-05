@@ -11,14 +11,18 @@ Endpoints:
     request: Bearer token
     response: buildCustomerResponse
 
-4 Get current customer by id: localhost:3000/customers/customer/'id'
+4 Get current customer by id: localhost:3000/customers/customer/:id
     request: id, Bearer token
     response: buildCustomerResponse
 
-5 Update Customer: localhost:3000/customers/customer/id
+5 Update Customer: localhost:3000/customers/customer/:id
   request: id, Bearer token, Body
   response: buildCustomerResponse
 
-6 Delete Customer: localhost:3000/customers/customer/id
+6 Delete Customer: localhost:3000/customers/customer/:id
   request: id, Bearer token
   response: DeleteResult
+
+7 History Find Customer: localhost:3000/statistic/findcustomer/:id
+  request: id, Bearer token
+  response: ResponseFindHistoryInterface[]

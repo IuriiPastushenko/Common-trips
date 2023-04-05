@@ -1,5 +1,5 @@
 import { FindCustomerEntity } from '@app/statistic/entities/find-customer.entity';
-import { FindHistoryInterface } from '@app/statistic/interfaces/find-history.inteface';
+import { FindHistoryInterface } from '@app/statistic/interfaces/find-history.interface';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

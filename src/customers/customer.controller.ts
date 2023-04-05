@@ -19,8 +19,16 @@ import { UpdateCustomerDto } from '@app/customers/dto/update-customer.dto';
 import { CustomerType } from '@app/customers/interfaces/response-customer.types';
 import { DeleteResult } from 'typeorm';
 import { CustomerStatisticService } from '@app/customers/customer-statistic.service';
+import { ApiCreateCustomer } from '@app/customers/api/create.decorator';
+import { ApiLoginCustomer } from '@app/customers/api/login.decorator';
+import { ApiTags } from '@nestjs/swagger';
+import { ApiUpdateCustomer } from '@app/customers/api/update.decorator';
+import { ApiCurrentCustomer } from '@app/customers/api/current-customer.decorator';
+import { ApiCustomerByID } from '@app/customers/api/customer-by-id.decorator';
+import { ApiDeleteustomer } from '@app/customers/api/delete.decorator';
 
 @Controller('customers')
+@ApiTags('customers')
 export class CustomersController {
   constructor(
     private readonly customersService: CustomerService,
@@ -28,6 +36,7 @@ export class CustomersController {
   ) {}
 
   @Post('/create')
+  @ApiCreateCustomer()
   async create(
     @Body() dataForCreateCustomer: CreateCustomerDto,
   ): Promise<CustomerResponseInterface> {
@@ -38,8 +47,9 @@ export class CustomersController {
   }
 
   @Post('/login')
+  @ApiLoginCustomer()
   async login(
-    @Body('customer') dataForLoginCustomer: LoginCustomerDto,
+    @Body() dataForLoginCustomer: LoginCustomerDto,
   ): Promise<CustomerResponseInterface> {
     const customer = await this.customersService.loginCustomer(
       dataForLoginCustomer,
@@ -49,6 +59,7 @@ export class CustomersController {
 
   @Get('/currentcustomer')
   @UseGuards(AuthGuard)
+  @ApiCurrentCustomer()
   async currentCustomer(
     @CurrentCustomer() currentCustomer: CustomerEntity,
   ): Promise<CustomerType> {
@@ -57,6 +68,7 @@ export class CustomersController {
 
   @Get('/customer/:id')
   @UseGuards(AuthGuard)
+  @ApiCustomerByID()
   async getCustomerById(
     @CurrentCustomer() currentCustomer: CustomerEntity,
     @Param('id') id: string,
@@ -71,6 +83,7 @@ export class CustomersController {
 
   @Patch('/customer/:id')
   @UseGuards(AuthGuard)
+  @ApiUpdateCustomer()
   async update(
     @CurrentCustomer() currentCustomer: CustomerEntity,
     @Param('id') id: string,
@@ -86,6 +99,7 @@ export class CustomersController {
 
   @Delete('/customer/:id')
   @UseGuards(AuthGuard)
+  @ApiDeleteustomer()
   remove(
     @CurrentCustomer() currentCustomer: CustomerEntity,
     @Param('id') id: string,

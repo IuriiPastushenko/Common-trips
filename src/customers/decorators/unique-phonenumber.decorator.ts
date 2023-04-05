@@ -23,7 +23,7 @@ export class IsPhoneNumberlUnique implements ValidatorConstraintInterface {
       where: { phoneNumber },
     });
     if (customer) {
-      throw new BadRequestException('This phoneNumber is forbidden ');
+      throw new BadRequestException('This phoneNumber is forbidden');
     }
 
     return true;
