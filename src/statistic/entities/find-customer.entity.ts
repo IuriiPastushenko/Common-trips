@@ -1,4 +1,4 @@
-import { CustomerEntity } from '@app/customers/entities/customer.entity';
+import { CustomerEntity } from '../../customers/entities/customer.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('findcustomers')

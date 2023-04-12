@@ -15,6 +15,9 @@ import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { RoleGuard } from '@app/customers/guards/role.guard';
 import { ConfigModule } from '@nestjs/config';
 import { StatisticModule } from '@app/statistic/statistic.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { DestinationsModule } from './destinations/destinations.module';
+import mongoPath from './mongoose.connects';
 
 @Module({
   imports: [
@@ -23,6 +26,8 @@ import { StatisticModule } from '@app/statistic/statistic.module';
     CustomersModule,
     TripsModule,
     StatisticModule,
+    MongooseModule.forRoot(mongoPath),
+    DestinationsModule,
   ],
   controllers: [AppController],
   providers: [

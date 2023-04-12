@@ -8,7 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCustomerDto } from '@app/customers/dto/create-customer.dto';
 import { LoginCustomerDto } from '@app/customers/dto/login-customer.dto';
-import { CustomerEntity } from '@app/customers/entities/customer.entity';
+import { CustomerEntity } from './entities/customer.entity';
 import { CustomerResponseInterface } from './interfaces/response-customer.interface';
 import { sign } from 'jsonwebtoken';
 import { compare } from 'bcrypt';

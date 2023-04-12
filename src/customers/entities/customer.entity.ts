@@ -1,4 +1,4 @@
-import { FindCustomerEntity } from '@app/statistic/entities/find-customer.entity';
+import { FindCustomerEntity } from '../../statistic/entities/find-customer.entity';
 import { hash } from 'bcrypt';
 import {
   BeforeInsert,
