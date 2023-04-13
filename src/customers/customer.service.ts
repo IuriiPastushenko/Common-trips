@@ -64,7 +64,7 @@ export class CustomerService {
     const adminRoleCustomer = currentCustomer.roles.includes('admin');
     if (!adminRoleCustomer && currentCustomer.id !== id) {
       throw new ForbiddenException(
-        `Access is allowed only admin or customer with id=${id}`,
+        `Access is allowed only admin or customer with id = ${id}`,
       );
     }
     const customer = await this.findCustomerById(id);

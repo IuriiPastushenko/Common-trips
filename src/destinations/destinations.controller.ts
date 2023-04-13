@@ -6,8 +6,13 @@ import { DestinationsService } from './destinations.service';
 export class DestinationsController {
   constructor(private readonly destinationsService: DestinationsService) {}
 
-  @Get(':city')
-  async findOne(@Param('city') city: string): Promise<Destination[]> {
-    return this.destinationsService.findOne(city);
+  @Get('/city/:city')
+  async findByCity(@Param('city') city: string): Promise<Destination[]> {
+    return this.destinationsService.findByNameOfCity(city.toUpperCase());
+  }
+
+  @Get('cityid/:id')
+  async findByID(@Param('id') id: string): Promise<Destination> {
+    return this.destinationsService.findById(id);
   }
 }
