@@ -1,4 +1,4 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
 export type coordinatsDocument = HydratedDocument<Coordinats>;
@@ -11,3 +11,5 @@ export class Coordinats {
   @Prop()
   y: number;
 }
+
+export const CoordinatsSchema = SchemaFactory.createForClass(Coordinats);

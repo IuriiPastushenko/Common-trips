@@ -55,5 +55,9 @@ export class AppModule {
       path: 'statistic/*',
       method: RequestMethod.ALL,
     });
+    consumer.apply(AuthMiddleware).forRoutes({
+      path: 'destinations/*',
+      method: RequestMethod.ALL,
+    });
   }
 }

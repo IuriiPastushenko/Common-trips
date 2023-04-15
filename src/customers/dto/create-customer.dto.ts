@@ -11,11 +11,7 @@ import { IsEmailUnique } from '@app/customers/decorators/unique-email.decorator'
 import { CustomersRole } from '@app/customers/enums/role.enum';
 import { IsPhoneNumberlUnique } from '@app/customers/decorators/unique-phonenumber.decorator';
 import { ApiProperty } from '@nestjs/swagger';
-
-enum CustomersGender {
-  male,
-  female,
-}
+import { Gender } from '../enums/gender.enum';
 
 export class CreateCustomerDto {
   @ApiProperty({ description: 'First name of the customer', nullable: false })
@@ -28,7 +24,7 @@ export class CreateCustomerDto {
 
   @ApiProperty({ description: 'Gender of the customer', nullable: true })
   @IsOptional()
-  @IsEnum(CustomersGender)
+  @IsEnum(Gender)
   readonly gender?: string;
 
   @ApiProperty({ description: 'Year birth of the customer', nullable: true })

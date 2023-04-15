@@ -1,6 +1,10 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { Destination } from './schemas/destination.schema';
 import { DestinationsService } from './destinations.service';
+import { CurrentCustomer } from '@app/customers/decorators/customer.decorator';
+import { CustomerEntity } from '@app/customers/entities/customer.entity';
+import { PointOfTripDto } from './dto/point-trip.dto';
+import { IdValidDto } from './dto/id-valid.dto';
 
 @Controller('destinations')
 export class DestinationsController {
@@ -12,7 +16,19 @@ export class DestinationsController {
   }
 
   @Get('cityid/:id')
-  async findByID(@Param('id') id: string): Promise<Destination> {
-    return this.destinationsService.findById(id);
+  async findByID(
+    @CurrentCustomer() currentCustomer: CustomerEntity,
+    @Param() { id }: IdValidDto,
+    @Query() { point }: PointOfTripDto,
+  ): Promise<Destination> {
+    const rezult = await this.destinationsService.findById(id);
+    const finder = this.destinationsService.getFinder(currentCustomer);
+    await this.destinationsService.createFindCityHistory(
+      id,
+      rezult.city,
+      point,
+      finder,
+    );
+    return rezult;
   }
 }
