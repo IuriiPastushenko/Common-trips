@@ -9,6 +9,9 @@ import {
   FindCityHistory,
   FindCityHistorySchema,
 } from './schemas/find-city.schema';
+import { ApiService } from '@app/api/api.service';
+import { HttpModule } from '@nestjs/axios';
+import { ApiModule } from '@app/api/api.module';
 
 @Module({
   imports: [
@@ -17,6 +20,7 @@ import {
       { name: FindCityHistory.name, schema: FindCityHistorySchema },
     ]),
     TypeOrmModule.forFeature([CustomerEntity]),
+    ApiModule,
   ],
   controllers: [DestinationsController],
   providers: [DestinationsService],

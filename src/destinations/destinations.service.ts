@@ -3,8 +3,8 @@ import { Destination } from './schemas/destination.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CustomerEntity } from '@app/customers/entities/customer.entity';
-import { PointOfTripDto } from './dto/point-trip.dto';
 import { FindCityHistory } from './schemas/find-city.schema';
+import { ApiService } from '@app/api/api.service';
 
 @Injectable()
 export class DestinationsService {
@@ -12,6 +12,7 @@ export class DestinationsService {
     @InjectModel(Destination.name) private destinationModel: Model<Destination>,
     @InjectModel(FindCityHistory.name)
     private findCityHistoryModel: Model<FindCityHistory>,
+    private readonly apiService: ApiService,
   ) {}
 
   async findByNameOfCity(city: string): Promise<Destination[]> {
@@ -27,6 +28,7 @@ export class DestinationsService {
     if (!city) {
       throw new NotFoundException(`Incorrect id = ${id}`);
     }
+    console.log(await this.apiService.getWeather(city.loc.x, city.loc.y));
     return city;
   }
 
@@ -42,6 +44,7 @@ export class DestinationsService {
       point,
       finder,
     });
+
     return findCityHistory.save();
   }
 

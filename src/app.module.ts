@@ -17,7 +17,9 @@ import { ConfigModule } from '@nestjs/config';
 import { StatisticModule } from '@app/statistic/statistic.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DestinationsModule } from './destinations/destinations.module';
+import { ApiModule } from './api/api.module';
 import mongoPath from './mongoose.connects';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import mongoPath from './mongoose.connects';
     StatisticModule,
     MongooseModule.forRoot(mongoPath),
     DestinationsModule,
+    ApiModule,
+    HttpModule,
   ],
   controllers: [AppController],
   providers: [
