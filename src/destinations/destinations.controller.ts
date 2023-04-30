@@ -5,10 +5,17 @@ import { CurrentCustomer } from '@app/customers/decorators/customer.decorator';
 import { CustomerEntity } from '@app/customers/entities/customer.entity';
 import { PointOfTripDto } from './dto/point-trip.dto';
 import { IdValidDto } from './dto/id-valid.dto';
+import { ApiService } from '@app/api/api.service';
+import { FindCityHistory } from './schemas/find-city.schema';
+import { DestinationStatisticService } from './destinations-statistic.service';
 
 @Controller('destinations')
 export class DestinationsController {
-  constructor(private readonly destinationsService: DestinationsService) {}
+  constructor(
+    private readonly destinationsService: DestinationsService,
+    private readonly destinationStatisticService: DestinationStatisticService,
+    private readonly apiService: ApiService,
+  ) {}
 
   @Get('/city/:city')
   async findByCity(@Param('city') city: string): Promise<Destination[]> {
@@ -23,11 +30,20 @@ export class DestinationsController {
   ): Promise<Destination> {
     const rezult = await this.destinationsService.findById(id);
     const finder = this.destinationsService.getFinder(currentCustomer);
-    await this.destinationsService.createFindCityHistory(
-      id,
-      rezult.city,
-      point,
+    const weather = await this.apiService.getWeather(
+      rezult.loc.x,
+      rezult.loc.y,
+    );
+    const dataForSaveHistory: FindCityHistory = {
+      city_id: id,
+      city_name: rezult.city,
+      point: point,
       finder,
+      descriptionWeather: weather.weather[0].main,
+      temp: weather.main.temp,
+    };
+    await this.destinationStatisticService.createFindCityHistory(
+      dataForSaveHistory,
     );
     return rezult;
   }

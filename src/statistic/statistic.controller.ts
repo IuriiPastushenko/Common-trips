@@ -6,6 +6,7 @@ import { StatisticService } from '@app/statistic/statistic.service';
 import { ResponseFindHistoryInterface } from '@app/statistic/interfaces/response-findhistory.interface';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiHistoryFind } from '@app/statistic/api/history-find.decorator';
+import { ResponseFindHistoryCityInterface } from './interfaces/response-findhistorycity.interface';
 
 @Controller('statistic')
 @ApiTags('statistic')
@@ -19,6 +20,14 @@ export class StatisticController {
     @Param('id') id: string,
   ): Promise<ResponseFindHistoryInterface[]> {
     const history = await this.statisticService.getHistorybyID(+id);
+    return history;
+  }
+
+  @Get('/findcity/:id')
+  async historyFindCity(
+    @Param('id') id: string,
+  ): Promise<ResponseFindHistoryCityInterface[]> {
+    const history = await this.statisticService.getHistoryCityById(id);
     return history;
   }
 }

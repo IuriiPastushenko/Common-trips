@@ -31,7 +31,10 @@ import { HttpModule } from '@nestjs/axios';
     MongooseModule.forRoot(mongoPath),
     DestinationsModule,
     ApiModule,
-    HttpModule,
+    HttpModule.register({
+      timeout: 5000,
+      maxRedirects: 5,
+    }),
   ],
   controllers: [AppController],
   providers: [

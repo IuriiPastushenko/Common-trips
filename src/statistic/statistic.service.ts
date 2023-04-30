@@ -2,10 +2,18 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { FindCustomerEntity } from '@app/statistic/entities/find-customer.entity';
 import { ResponseFindHistoryInterface } from '@app/statistic/interfaces/response-findhistory.interface';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { FindCityDateHistory } from './schemas/find-city-date.schema';
+import { ResponseFindHistoryCityInterface } from './interfaces/response-findhistorycity.interface';
 
 @Injectable()
 export class StatisticService {
-  constructor(private dataSourse: DataSource) {}
+  constructor(
+    private dataSourse: DataSource,
+    @InjectModel(FindCityDateHistory.name)
+    private findCityDateHistoryModel: Model<FindCityDateHistory>,
+  ) {}
 
   async getHistorybyID(id: number): Promise<ResponseFindHistoryInterface[]> {
     const history = await this.dataSourse
@@ -19,6 +27,23 @@ export class StatisticService {
     if (history.length === 0) {
       throw new NotFoundException(`No search data for this id=${id}`);
     }
+    return history;
+  }
+
+  async getHistoryCityById(
+    id: string,
+  ): Promise<ResponseFindHistoryCityInterface[]> {
+    const historyCityById = await this.findCityDateHistoryModel
+      .find({ city_id: id })
+      .exec();
+    if (historyCityById.length === 0) {
+      throw new NotFoundException(`Incorrect id = ${id}`);
+    }
+    const history = historyCityById.map(({ point, finder, createdAt }) => ({
+      point,
+      finder,
+      createdAt,
+    }));
     return history;
   }
 }

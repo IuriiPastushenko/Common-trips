@@ -16,6 +16,12 @@ export class FindCityHistory {
 
   @Prop()
   finder: number;
+
+  @Prop()
+  descriptionWeather: string;
+
+  @Prop()
+  temp: number;
 }
 
 export const FindCityHistorySchema =

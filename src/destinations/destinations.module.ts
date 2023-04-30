@@ -9,9 +9,8 @@ import {
   FindCityHistory,
   FindCityHistorySchema,
 } from './schemas/find-city.schema';
-import { ApiService } from '@app/api/api.service';
-import { HttpModule } from '@nestjs/axios';
 import { ApiModule } from '@app/api/api.module';
+import { DestinationStatisticService } from './destinations-statistic.service';
 
 @Module({
   imports: [
@@ -23,6 +22,6 @@ import { ApiModule } from '@app/api/api.module';
     ApiModule,
   ],
   controllers: [DestinationsController],
-  providers: [DestinationsService],
+  providers: [DestinationsService, DestinationStatisticService],
 })
 export class DestinationsModule {}
