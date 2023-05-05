@@ -7,15 +7,16 @@ import { AuthGuard } from '@app/customers/guards/auth.guard';
 import { IsEmailUnique } from '@app/customers/decorators/unique-email.decorator';
 import { IsPhoneNumberlUnique } from '@app/customers/decorators/unique-phonenumber.decorator';
 import { ConfigModule } from '@nestjs/config';
-import { CustomerStatisticService } from '@app/customers/customer-statistic.service';
+import { CustomerStatisticService } from '@app/customers/customer-statistic/customer-statistic.service';
 import { FindCustomerEntity } from '@app/statistic/entities/find-customer.entity';
+import { UploadImagesController } from './upload-images/upload-images.controller';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([CustomerEntity, FindCustomerEntity]),
     ConfigModule,
   ],
-  controllers: [CustomersController],
+  controllers: [CustomersController, UploadImagesController],
   providers: [
     CustomerService,
     AuthGuard,

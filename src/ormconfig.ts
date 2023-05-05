@@ -12,6 +12,11 @@ const configTypeOrm: DataSourceOptions = {
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   synchronize: false,
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+  extra: {
+    trustServerCertificate: false,
+    Encrypt: true,
+    IntegratedSecurity: true,
+  },
 };
 
 export default configTypeOrm;

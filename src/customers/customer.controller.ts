@@ -11,14 +11,14 @@ import {
 import { CustomerService } from '@app/customers/customer.service';
 import { CreateCustomerDto } from '@app/customers/dto/create-customer.dto';
 import { LoginCustomerDto } from '@app/customers/dto/login-customer.dto';
-import { CustomerResponseInterface } from '@app/customers/interfaces/response-customer.interface';
+import { CustomerResponseInterface } from '@app/customers/types/response-customer.interface';
 import { CurrentCustomer } from '@app/customers/decorators/customer.decorator';
 import { CustomerEntity } from '@app/customers/entities/customer.entity';
 import { AuthGuard } from '@app/customers/guards/auth.guard';
 import { UpdateCustomerDto } from '@app/customers/dto/update-customer.dto';
-import { CustomerType } from '@app/customers/interfaces/response-customer.types';
+import { CustomerType } from '@app/customers/types/response-customer.type';
 import { DeleteResult } from 'typeorm';
-import { CustomerStatisticService } from '@app/customers/customer-statistic.service';
+import { CustomerStatisticService } from '@app/customers/customer-statistic/customer-statistic.service';
 import { ApiCreateCustomer } from '@app/customers/api/create.decorator';
 import { ApiLoginCustomer } from '@app/customers/api/login.decorator';
 import { ApiTags } from '@nestjs/swagger';
@@ -100,7 +100,7 @@ export class CustomersController {
   @Delete('/customer/:id')
   @UseGuards(AuthGuard)
   @ApiDeleteustomer()
-  remove(
+  async remove(
     @CurrentCustomer() currentCustomer: CustomerEntity,
     @Param('id') id: string,
   ): Promise<DeleteResult> {

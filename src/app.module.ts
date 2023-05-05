@@ -17,9 +17,10 @@ import { ConfigModule } from '@nestjs/config';
 import { StatisticModule } from '@app/statistic/statistic.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DestinationsModule } from './destinations/destinations.module';
-import { ApiModule } from './api/api.module';
+import { ApiModule } from './connect-api/api.module';
 import mongoPath from './mongoose.connects';
 import { HttpModule } from '@nestjs/axios';
+import { AwsModule } from './aws/aws.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { HttpModule } from '@nestjs/axios';
       timeout: 5000,
       maxRedirects: 5,
     }),
+    AwsModule,
   ],
   controllers: [AppController],
   providers: [

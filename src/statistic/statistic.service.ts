@@ -34,16 +34,12 @@ export class StatisticService {
     id: string,
   ): Promise<ResponseFindHistoryCityInterface[]> {
     const historyCityById = await this.findCityDateHistoryModel
-      .find({ city_id: id })
+      .find({ city_id: id }, { _id: 0, point: 1, finder: 1, createdAt: 1 })
       .exec();
     if (historyCityById.length === 0) {
       throw new NotFoundException(`Incorrect id = ${id}`);
     }
-    const history = historyCityById.map(({ point, finder, createdAt }) => ({
-      point,
-      finder,
-      createdAt,
-    }));
-    return history;
+
+    return historyCityById;
   }
 }

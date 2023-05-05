@@ -9,7 +9,7 @@ import {
   FindCityHistory,
   FindCityHistorySchema,
 } from './schemas/find-city.schema';
-import { ApiModule } from '@app/api/api.module';
+import { ApiModule } from '@app/connect-api/api.module';
 import { DestinationStatisticService } from './destinations-statistic.service';
 
 @Module({

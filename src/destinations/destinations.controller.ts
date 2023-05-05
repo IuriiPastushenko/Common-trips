@@ -5,7 +5,7 @@ import { CurrentCustomer } from '@app/customers/decorators/customer.decorator';
 import { CustomerEntity } from '@app/customers/entities/customer.entity';
 import { PointOfTripDto } from './dto/point-trip.dto';
 import { IdValidDto } from './dto/id-valid.dto';
-import { ApiService } from '@app/api/api.service';
+import { ApiService } from '@app/connect-api/api.service';
 import { FindCityHistory } from './schemas/find-city.schema';
 import { DestinationStatisticService } from './destinations-statistic.service';
 

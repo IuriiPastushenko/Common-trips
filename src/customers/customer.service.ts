@@ -9,11 +9,11 @@ import { Repository } from 'typeorm';
 import { CreateCustomerDto } from '@app/customers/dto/create-customer.dto';
 import { LoginCustomerDto } from '@app/customers/dto/login-customer.dto';
 import { CustomerEntity } from './entities/customer.entity';
-import { CustomerResponseInterface } from './interfaces/response-customer.interface';
+import { CustomerResponseInterface } from './types/response-customer.interface';
 import { sign } from 'jsonwebtoken';
 import { compare } from 'bcrypt';
 import { UpdateCustomerDto } from '@app/customers/dto/update-customer.dto';
-import { CustomerType } from '@app/customers/interfaces/response-customer.types';
+import { CustomerType } from '@app/customers/types/response-customer.type';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
