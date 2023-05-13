@@ -37,7 +37,7 @@ export class CustomerEntity {
   @Column({ name: 'phone_number', unique: true, type: 'varchar' })
   phoneNumber: string;
 
-  @Column({ default: '', type: 'varchar' })
+  @Column({ default: 'src/upload/Default-68107.png', type: 'varchar' })
   image: string;
 
   @Column({ name: 'car_name', nullable: true, type: 'varchar' })

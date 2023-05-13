@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CustomerStatisticService } from '@app/customers/customer-statistic/customer-statistic.service';
 import { FindCustomerEntity } from '@app/statistic/entities/find-customer.entity';
 import { UploadImagesController } from './upload-images/upload-images.controller';
+import { UploadImagesService } from './upload-images/upload-images.service';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UploadImagesController } from './upload-images/upload-images.controller
     IsEmailUnique,
     IsPhoneNumberlUnique,
     CustomerStatisticService,
+    UploadImagesService,
   ],
   exports: [CustomerService],
 })

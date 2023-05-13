@@ -55,7 +55,12 @@ Commits
 
 8 added_Swagger    
 
- 
+9 added local upload image of customer(upload, update and delete)
+  BD PostgreSQL rescheduled to AWS
+  added BD of places(Mongo DB)
+  created historyFind place(start or finish)
+  added weather by API openweathermap.org for places
+
 
 
 
