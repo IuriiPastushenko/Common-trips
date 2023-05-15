@@ -2,7 +2,7 @@ import { diskStorage } from 'multer';
 import { uploadSaveFileName } from './upload-save-name.type';
 import { MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common';
 
-export const multerOptions = {
+export const multerOptionsLocal = {
   storage: diskStorage({
     destination: './src/upload',
     filename: uploadSaveFileName,
@@ -19,3 +19,5 @@ export const pipeValidators = {
 export const defaultCustomerImage = 'src/upload/Default-c003.png';
 
 export const deleteImage = 'Image was deleted successfully';
+
+export const nameSs3Bucket = 'imageofcustomers';

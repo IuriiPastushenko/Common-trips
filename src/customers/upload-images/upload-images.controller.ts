@@ -12,7 +12,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '../guards/auth.guard';
 import {
   defaultCustomerImage,
-  multerOptions,
+  multerOptionsLocal,
   pipeValidators,
 } from './types/uploads.constants';
 import { UploadImagesService } from './upload-images.service';
@@ -30,7 +30,7 @@ export class UploadImagesController {
 
   @Patch('upload-local/:id')
   @UseGuards(AuthGuard)
-  @UseInterceptors(FileInterceptor('file', multerOptions))
+  @UseInterceptors(FileInterceptor('file', multerOptionsLocal))
   async uploadImageLocal(
     @UploadedFile(new ParseFilePipe(pipeValidators))
     file: Express.Multer.File,
@@ -39,12 +39,12 @@ export class UploadImagesController {
   ): Promise<CustomerType> {
     const response = file.path;
     const path =
-      await this.uploadImagesService.updateByDefaultCustomerImageById(
+      await this.uploadImagesService.updateByDefaultCustomerImageByIdLocal(
         currentCustomer,
         +id,
         response,
       );
-    await this.uploadImagesService.deleteCustomerImage(path, +id);
+    await this.uploadImagesService.deleteCustomerImageLocal(path, +id);
     const customer = await this.customersService.findCustomerById(+id);
     return this.customersService.buildCustomerResponse(customer);
   }
@@ -56,11 +56,26 @@ export class UploadImagesController {
     @Param('id') id: string,
   ): Promise<string> {
     const path =
-      await this.uploadImagesService.updateByDefaultCustomerImageById(
+      await this.uploadImagesService.updateByDefaultCustomerImageByIdLocal(
         currentCustomer,
         +id,
         defaultCustomerImage,
       );
-    return this.uploadImagesService.deleteCustomerImage(path, +id);
+    return this.uploadImagesService.deleteCustomerImageLocal(path, +id);
+  }
+
+  @Patch('upload-aws/:id')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(FileInterceptor('file', multerOptionsLocal))
+  async uploadImageAWS(
+    @UploadedFile(new ParseFilePipe(pipeValidators))
+    file: Express.Multer.File,
+    @CurrentCustomer() currentCustomer: CustomerEntity,
+    @Param('id') id: string,
+  ) {
+    await this.uploadImagesService.uploadImageAWS(
+      file.originalname,
+      file.buffer,
+    );
   }
 }
