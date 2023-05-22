@@ -4,6 +4,7 @@ import {
   Param,
   ParseFilePipe,
   Patch,
+  Post,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -12,6 +13,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '../guards/auth.guard';
 import {
   defaultCustomerImage,
+  hostAWS,
   multerOptionsLocal,
   pipeValidators,
 } from './types/uploads.constants';
@@ -39,7 +41,7 @@ export class UploadImagesController {
   ): Promise<CustomerType> {
     const response = file.path;
     const path =
-      await this.uploadImagesService.updateByDefaultCustomerImageByIdLocal(
+      await this.uploadImagesService.updateByDefaultCustomerImageById(
         currentCustomer,
         +id,
         response,
@@ -56,7 +58,7 @@ export class UploadImagesController {
     @Param('id') id: string,
   ): Promise<string> {
     const path =
-      await this.uploadImagesService.updateByDefaultCustomerImageByIdLocal(
+      await this.uploadImagesService.updateByDefaultCustomerImageById(
         currentCustomer,
         +id,
         defaultCustomerImage,
@@ -64,18 +66,23 @@ export class UploadImagesController {
     return this.uploadImagesService.deleteCustomerImageLocal(path, +id);
   }
 
-  @Patch('upload-aws/:id')
+  @Post('upload-aws/:id')
   @UseGuards(AuthGuard)
-  @UseInterceptors(FileInterceptor('file', multerOptionsLocal))
+  @UseInterceptors(FileInterceptor('file'))
   async uploadImageAWS(
     @UploadedFile(new ParseFilePipe(pipeValidators))
     file: Express.Multer.File,
     @CurrentCustomer() currentCustomer: CustomerEntity,
     @Param('id') id: string,
   ) {
-    await this.uploadImagesService.uploadImageAWS(
-      file.originalname,
-      file.buffer,
+    await this.uploadImagesService.uploadImageAWS(file);
+    const response = hostAWS + file.originalname;
+    await this.uploadImagesService.updateByDefaultCustomerImageById(
+      currentCustomer,
+      +id,
+      response,
     );
+    const customer = await this.customersService.findCustomerById(+id);
+    return this.customersService.buildCustomerResponse(customer);
   }
 }

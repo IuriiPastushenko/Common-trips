@@ -9,12 +9,12 @@ import {
 } from './types/uploads.constants';
 import { unlink } from 'node:fs/promises';
 import { CustomerService } from '../customer.service';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { PutObjectCommand, S3, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UploadImagesService {
-  private s3Client = new S3Client({
+  private s3 = new S3({
     region: this.configService.getOrThrow<string>('AWS_S3_REGION'),
   });
   constructor(
@@ -24,7 +24,7 @@ export class UploadImagesService {
     private configService: ConfigService,
   ) {}
 
-  async updateByDefaultCustomerImageByIdLocal(
+  async updateByDefaultCustomerImageById(
     currentCustomer: CustomerEntity,
     id: number,
     imageForSave: string,
@@ -55,18 +55,16 @@ export class UploadImagesService {
     }
   }
 
-  async uploadImageAWS(filename: string, file: Buffer) {
+  async uploadImageAWS(file: Express.Multer.File) {
     try {
-      const awsRezult = await this.s3Client.send(
+      await this.s3.send(
         new PutObjectCommand({
           Bucket: nameSs3Bucket,
-          Body: file,
-          Key: filename,
+          Body: file.buffer,
+          Key: file.originalname,
+          ContentType: file.mimetype,
         }),
       );
-      console.log(awsRezult.Expiration);
-      console.log(awsRezult.ETag);
-      return awsRezult.SSEKMSKeyId;
     } catch (error) {
       throw new BadRequestException();
     }
