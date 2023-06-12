@@ -9,7 +9,7 @@ import {
 } from './types/uploads.constants';
 import { unlink } from 'node:fs/promises';
 import { CustomerService } from '../customer.service';
-import { PutObjectCommand, S3, S3Client } from '@aws-sdk/client-s3';
+import { PutObjectCommand, S3 } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()

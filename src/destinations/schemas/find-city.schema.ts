@@ -3,7 +3,7 @@ import { HydratedDocument } from 'mongoose';
 
 export type findCityHistorynDocument = HydratedDocument<FindCityHistory>;
 
-@Schema({ timestamps: true })
+@Schema()
 export class FindCityHistory {
   @Prop()
   city_id: string;
